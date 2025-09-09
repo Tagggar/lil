@@ -196,7 +196,7 @@ async function validateSession() {
 
             await page.goto(uebersichtUrl, {
                 waitUntil: "domcontentloaded",
-                timeout: 15000
+                timeout: 60000
             });
             await delay(2000);
 
@@ -231,7 +231,7 @@ async function keepSessionAlive() {
 
     try {
         const keepAlivePromise = (async () => {
-            await page.reload({ waitUntil: "domcontentloaded", timeout: 15000 });
+            await page.reload({ waitUntil: "domcontentloaded", timeout: 60000 });
             lastActivityTime = Date.now();
             saveSessionMeta();
             logger.info("Session Keep-Alive erfolgreich");
@@ -397,8 +397,8 @@ async function performLogin() {
             await page.goto(loginUrl, { waitUntil: "domcontentloaded", timeout: 20000 });
             await delay(2000);
 
-            await page.waitForSelector("#__BVID__27", { timeout: 15000 });
-            await page.waitForSelector("#__BVID__31", { timeout: 15000 });
+            await page.waitForSelector("#__BVID__27", { timeout: 60000 });
+            await page.waitForSelector("#__BVID__31", { timeout: 60000 });
 
             // Felder leeren und ausfüllen
             await page.fill("#__BVID__27", "");
@@ -690,7 +690,7 @@ function getInterval(daten) {
         return 60; // Mindestens 1 Minute bei Fehlern
     }
     if (sleepmode === "random") {
-        return getRandomInteger(300, 500);
+        return getRandomInteger(300, 900);
     }
     if (sleepmode === 'fixed') {
         if (sleepTime < 60) {
@@ -703,7 +703,7 @@ function getInterval(daten) {
         return getSmartInterval(daten);
     }
     logger.warn("Invalid sleep mode, defaulting to random interval.");
-    return getRandomInteger(300, 500);
+    return getRandomInteger(300, 900);
 }
 
 function getSmartInterval(Datenvolumen) {
